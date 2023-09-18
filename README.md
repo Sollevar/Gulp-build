@@ -30,7 +30,7 @@
 └── README.md                     # Описание сборки
 ```
 ## Ссылки
-[Документация Gulp] (https://gulpjs.com/)
-[Документация Sass на русском] (https://sass-scss.ru/)
+[Документация Gulp] (https://gulpjs.com/) <br>
+[Документация Sass на русском] (https://sass-scss.ru/) <br>
 [npm пакеты] (https://www.npmjs.com/)
 
