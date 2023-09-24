@@ -12,6 +12,7 @@ const imagemin = require('gulp-imagemin');
 const typograf = require('gulp-typograf');
 const newer = require('gulp-newer');
 const browserSync = require('browser-sync').create();
+const webpackStream = require('webpack-stream');
 
 const path = {  //пути к файлам
 
@@ -26,7 +27,8 @@ const path = {  //пути к файлам
     },
 
     scripts:{
-        src: 'src/js/**/*.js',
+        srcFull:'src/js/**/*.js',
+        srcMain: 'src/js/main.js',
         dest: 'dist/js/'
     },
 
@@ -74,18 +76,36 @@ const styles = () => { // обработка стилей
 }
 
 const scripts = () => { //обработка js файлов
-    return src(path.scripts.src)
-    .pipe(sourcemaps.init())
-        .pipe(babel({
-            presets: ['@babel/env']
-         }))
-        .pipe((concat('main.js')))
-        .pipe(uglify({
-            // toplevel: true  убирает лишний код (сокращает или убирает не использованный)
-        }).on('error', notify.onError()))
-    .pipe(sourcemaps.write('./'))
-    .pipe(dest(path.scripts.dest))
-    .pipe(browserSync.stream())
+    return src(path.scripts.srcMain)
+    .pipe(webpackStream(
+        {
+          mode: 'development',
+          output: {
+            filename: 'main.js',
+          },
+          module: {
+            rules: [{
+              test: /\.m?js$/,
+              exclude: /(node_modules|bower_components)/,
+              use: {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['@babel/preset-env']
+                }
+              }
+            }]
+          },
+        }
+      ))
+      .on('error', function (err) {
+        console.error('WEBPACK ERROR', err);
+        this.emit('end'); // Don't stop the rest of the task
+      })
+      .pipe(sourcemaps.init())
+      .pipe(uglify().on("error", notify.onError()))
+      .pipe(sourcemaps.write('.'))
+      .pipe(dest(path.scripts.dest))
+      .pipe(browserSync.stream())
 }
 
 const img = () => {
@@ -113,7 +133,7 @@ const wathFiles = () => { // настройка браузера
 watch(path.html.dest).on('change',browserSync.reload)
 watch(path.html.src,html)
 watch(path.styles.src, styles)
-watch(path.scripts.src, scripts)
+watch(path.scripts.srcFull, scripts)
 watch(path.fonts.src, fonts)
 
 

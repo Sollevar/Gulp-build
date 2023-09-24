@@ -1,13 +1,8 @@
-@import 'vendor';
-@import 'setting';
-@import 'fonts';
 @import 'vars';
+@import 'fonts';
+// подключение шрифта
+@include font-face("Gilroy", "../fonts/GilroyRegular", 400, normal);
+@import 'setting';
 @import './components/header';
 @import './components/footer';
-@import './components/about';
-@include font-face("Gilroy", "../fonts/GilroyRegular", 400, normal);
 
-body {
-    font-family: 'Gilroy',sans-serif;
-    background-color: #b4c74693;
-}
