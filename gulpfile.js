@@ -13,6 +13,7 @@ const typograf = require('gulp-typograf');
 const newer = require('gulp-newer');
 const browserSync = require('browser-sync').create();
 const webpackStream = require('webpack-stream');
+const svgSprite = require('gulp-svg-sprite');
 
 const path = {  //пути к файлам
 
@@ -33,13 +34,18 @@ const path = {  //пути к файлам
     },
 
     images:{
-        src: 'src/images/**/*',
+        src: 'src/images/*.{jpg,jpeg,png,svg}',
         dest: 'dist/images'
     },
 
     fonts:{
         src: 'src/fonts/**/*',
         dest: 'dist/fonts'
+    },
+
+    svg:{
+        src: 'src/images/svg/**.svg',
+        dest: 'dist/images/svg'
     }
 }
 
@@ -115,6 +121,18 @@ const img = () => {
         .pipe(dest(path.images.dest))
 }
 
+const svgSprites = () =>{
+    return src(path.svg.src)
+    .pipe(svgSprite({
+        mode:{
+            stack:{
+                sprite: '../sprite.svg'
+            }
+        }
+    }))
+    .pipe(dest(path.svg.dest))
+}
+
 const fonts = () => {
     return src(path.fonts.src)
       .pipe(dest(path.fonts.dest))
@@ -135,6 +153,7 @@ watch(path.html.src,html)
 watch(path.styles.src, styles)
 watch(path.scripts.srcFull, scripts)
 watch(path.fonts.src, fonts)
+watch(path.svg.src, svgSprites)
 
 
 
@@ -145,5 +164,6 @@ exports.img = img
 exports.html = html
 exports.fonts = fonts
 exports.cleanALL = cleanALL
+exports.svgSprites = svgSprites
 
-exports.default = series(clean, html, fonts, parallel(styles,scripts), img, wathFiles)
+exports.default = series(clean, html, fonts, parallel(styles,scripts), img, svgSprites, wathFiles)
