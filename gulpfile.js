@@ -14,6 +14,7 @@ const newer = require('gulp-newer');
 const browserSync = require('browser-sync').create();
 const webpackStream = require('webpack-stream');
 const svgSprite = require('gulp-svg-sprite');
+const webp = require('gulp-webp');
 
 const path = {  //пути к файлам
 
@@ -35,6 +36,7 @@ const path = {  //пути к файлам
 
     images:{
         src: 'src/images/*.{jpg,jpeg,png,svg}',
+        srcWebp:'src/images/**/*.{jpg,jpeg,png}',
         dest: 'dist/images'
     },
 
@@ -121,6 +123,12 @@ const img = () => {
         .pipe(dest(path.images.dest))
 }
 
+const webpImages = () => {
+    return src(path.images.srcWebp)
+      .pipe(webp())
+      .pipe(dest(path.images.dest))
+  };
+
 const svgSprites = () =>{
     return src(path.svg.src)
     .pipe(svgSprite({
@@ -154,6 +162,7 @@ watch(path.styles.src, styles)
 watch(path.scripts.srcFull, scripts)
 watch(path.fonts.src, fonts)
 watch(path.svg.src, svgSprites)
+watch(path.images.srcWebp, webpImages)
 
 
 
@@ -165,5 +174,6 @@ exports.html = html
 exports.fonts = fonts
 exports.cleanALL = cleanALL
 exports.svgSprites = svgSprites
+exports.webpImages = webpImages
 
-exports.default = series(clean, html, fonts, parallel(styles,scripts), img, svgSprites, wathFiles)
+exports.default = series(clean, html, fonts, parallel(styles,scripts), parallel(img, svgSprites,webpImages), wathFiles)

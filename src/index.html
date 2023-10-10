@@ -19,9 +19,15 @@
     <main>
         <section class="...">
             <div class="container">
+                <!-- Usage svgSprite -->
                 <svg width="100" height="52" viewBox="0 0 36 36">
                     <use xlink:href="images/svg/sprite.svg#checked"></use>
                 </svg>
+                <!-- Usage webp -->
+                <picture>
+                    <source srcset="images/about-main.webp" type="image/webp">
+                    <img loading="lazy" src="images/about-main.jpg" class="image" width="427" height="498" alt="Фото">
+                  </picture>
             </div>
         </section>
     </main>
