@@ -1,5 +1,7 @@
 @import 'vars';
 @import 'fonts';
+@import 'mixins';
+@import 'breakpoints';
 // подключение шрифта
 @include font-face("Gilroy", "../fonts/GilroyRegular", 400, normal);
 @import 'setting';

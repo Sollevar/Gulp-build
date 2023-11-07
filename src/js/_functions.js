@@ -81,3 +81,5 @@
 //       errorMessage: 'Вы не ввели телефон',
 //     },
 //   ])
+// Библиотека анимаций greenSock
+// import { gsap } from "gsap";

@@ -39,6 +39,7 @@
     "webpack-stream": "^7.0.0"
   },
   "dependencies": {
+    "gsap": "^3.12.2",
     "inputmask": "^5.0.8",
     "just-validate": "^4.2.0",
     "simplebar": "^6.2.5",
